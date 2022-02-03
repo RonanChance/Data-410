@@ -38,7 +38,7 @@ I am currently improving, and more thankful than ever for the upcoming semester.
 def RMSF_IGM(titer_value):
     if titer_value < 0.90:
         print("Negative")
-    elif titer_value > 0.90 and titer_value < 1.10:
+    elif titer_value >= 0.90 and titer_value <= 1.10:
         print("Equivocal")
     elif titer_value > 1.10:
         print("Positive")
