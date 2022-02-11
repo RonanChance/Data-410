@@ -13,15 +13,15 @@ The kernels are used to define the weight of importance associated with a given 
 
 Tricubic
 
-<img src="Images/tricubic.png" width="250">
+<img src="Images/p2/tricubic.png" width="250">
 
 Quartic
 
-<img src="Images/quartic.png" width="250">
+<img src="Images/p2/quartic.png" width="250">
 
 Epanechnikov
 
-<img src="Images/epanechnikov.png" width="250">
+<img src="Images/p2/epanechnikov.png" width="250">
 
 Here are their python implementations:
 
@@ -146,33 +146,135 @@ for depth in range(1,10):
             rf.fit(xtrain,ytrain)
             yhat_rf = rf.predict(xtest)
             mse_rf.append(mse(ytest,yhat_rf))
-            if np.mean(mse_rf) < lowest_mse:
-                lowest_mse = np.mean(mse_rf)
-                fav_depth = depth
-                fav_n = n
+        if np.mean(mse_rf) < lowest_mse:
+            lowest_mse = np.mean(mse_rf)
+            fav_depth = depth
+            fav_n = n
 print(lowest_mse, fav_depth, fav_n)
 ```
 
-Using this process, we find the following:
-
-In the image below, the black line shows the lowess model, while the red line shows random forest.
-
-<img src="Images/mtcars_overfit.png" width="350">
+We find the following:
 
 Lowess: Epanechnikov kernel and 0.387 tau results in a cross validated MSE: ~17.486
 
 RF: max_depth 2 with 25 n_estimators results in a cross validated MSE: ~16.530
 
-### These models are very sensitive to the data, so let us adjust some of the hyperparameters. 
+Here is our best models compared visually. The black line shows the lowess model, while the red line shows random forest.
 
-<img src="Images/mtcars_betterfit.png" width="350">
-
-Lowess: Tricubic kernel and 300 tau results in a cross validated MSE: ~18.791
-
-RF: max_depth 3 with 12 n_estimators results in a cross validated MSE: ~18.094 
-
-This is a good example of how visualization can be a useful took in machine learning, and the substantial impact that hyperparameters have on model results. 
+<img src="Images/p2/mtcars_overfit.png" width="350">
 
 ---
 
 # Dateset 2: Boston Housing Prices
+
+First step is to optimize the tau values for each kernel function and find the best k-fold validated mean square error. This is what we will use to compare against a random forest model.
+
+This time, instead of combining this process into one script, I have seperated and graphed the k-fold validated mean square errors for the different tau values for each kernel. I think this will help illustrate how tau value adjustments effect the model.
+
+<img src="Images/p2/boston_tri_tau.png" width="300">
+
+MSE: ~35.521 Tau: 0.1
+
+<img src="Images/p2/boston_quar_tau.png" width="300">
+
+MSE: ~35.532 Tau: 0.09
+
+<img src="Images/p2/boston_ep_tau.png" width="300">
+
+MSE: ~35.562 Tau: 0.09
+
+
+Given these results, we will use a tricubic function with a tau of 0.1.
+
+Here is the python code that was used for calculating and plotting the optimal values. (similar code was repeated for each kernel)
+
+```Python
+mse_total_list = []
+tau_total_list = []
+
+lowest_mse = 9999
+fav_tau = 0
+
+for tau in [i/1000 for i in range(10, 150, 10)]:
+    # reset mse list for each kfold validation
+    mse_lwr = []
+
+    for idxtrain,idxtest in kf.split(X):
+
+        # perform data handling scaling
+        ytrain = y[idxtrain]
+        xtrain = X[idxtrain]
+        xtrain = scale.fit_transform(xtrain.values.reshape(-1,1))
+        ytest = y[idxtest]
+        xtest = X[idxtest]
+        xtest = scale.transform(xtest.values.reshape(-1,1))
+        # use lowess to make predictions using this fold of data
+        yhat_lwr = lowess_reg(xtrain.ravel(), ytrain, xtest.ravel(), Tricubic, tau)
+        mse_lwr.append(mse(ytest,yhat_lwr))
+
+    mse_total_list.append(np.mean(mse_lwr))
+    tau_total_list.append(tau)
+    
+    if np.mean(mse_lwr) < lowest_mse:
+        lowest_mse = np.mean(mse_lwr)
+        fav_tau = tau
+
+plt.xlabel("Tau value",fontsize=16,color='Black')
+plt.ylabel('10-fold MSE',fontsize=16,color='Black')
+plt.title("Tau value to MSE Comparison",fontsize=16)
+plt.scatter(tau_total_list, mse_total_list)
+plt.plot(tau_total_list, mse_total_list)
+
+print("Tricubic", lowest_mse, fav_tau)
+```
+
+To calculate the optimal values for random forest, I iterated through possible depths and estimators to find the best k-fold validated mean square error. The code is shown below.
+
+```Python
+X = data["rooms"]
+y = data['cmedv']
+scale = StandardScaler()
+
+lowest_mse = 9999
+fav_depth = 0
+fav_n = 0
+
+kf = KFold(n_splits=10, shuffle=True, random_state=1234)
+
+for depth in range(1,10):
+    for n in range(5, 151, 5):
+
+        rf = RandomForestRegressor(n_estimators=n, max_depth=depth)
+        mse_rf = []
+
+        for idxtrain,idxtest in kf.split(X):
+            
+            # perform data handling scaling
+            ytrain = y[idxtrain]
+            xtrain = X[idxtrain]
+            xtrain = scale.fit_transform(xtrain.values.reshape(-1,1))
+            ytest = y[idxtest]
+            xtest = X[idxtest]
+            xtest = scale.transform(xtest.values.reshape(-1,1))
+
+            # use rf to make predictions using this fold of data
+            rf.fit(xtrain,ytrain)
+            yhat_rf = rf.predict(xtest)
+            mse_rf.append(mse(ytest,yhat_rf))
+
+            if np.mean(mse_rf) < lowest_mse:
+                lowest_mse = np.mean(mse_rf)
+                fav_depth = depth
+                fav_n = n
+
+print(lowest_mse, fav_depth, fav_n)
+```
+
+MSE: ~35.510 n_estimators: 150, max_depth: 2
+
+## Comparing Lowess and Random Forest Graphically
+
+<img src="Images/p2/boston_rf_lowess.png" width="350">
+
+---
+## Conclusions
