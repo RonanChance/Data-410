@@ -289,13 +289,13 @@ Here is our best models compared visually. The black line shows the lowess model
 
 Best Models for MTCars Data:
 
-Lowess: ~17.486 MSE
+Lowess: ~**17.486** MSE
 
 Random Forest: ~17.489 MSE
 
 Best Models for Boston Housing Data:
 
-Lowess: ~35.492 MSE
+Lowess: ~**35.492** MSE
 
 Random Forest: ~35.510 MSE
 
