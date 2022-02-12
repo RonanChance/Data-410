@@ -157,11 +157,11 @@ We find the following:
 
 Lowess: Epanechnikov kernel and 0.387 tau results in a cross validated MSE: ~17.486
 
-RF: max_depth 2 with 25 n_estimators results in a cross validated MSE: ~16.530
+RF:  60 n_estimators and 3 max_depth results in a cross validated MSE: ~17.489
 
 Here is our best models compared visually. The black line shows the lowess model, while the red line shows random forest.
 
-<img src="Images/p2/mtcars_overfit.png" width="350">
+<img src="Images/p2/mtcars.png" width="350">
 
 ---
 
@@ -181,7 +181,7 @@ MSE: ~35.532 Tau: 0.09
 
 <img src="Images/p2/boston_ep_tau.png" width="300">
 
-MSE: ~35.562 Tau: 0.09
+MSE: ~35.492 Tau: 0.085
 
 
 Given these results, we will use a tricubic function with a tau of 0.1.
@@ -278,3 +278,19 @@ MSE: ~35.510 n_estimators: 150, max_depth: 2
 
 ---
 ## Conclusions
+
+Best Models for MTCars Data:
+
+Lowess: ~17.486 MSE
+
+Random Forest: ~17.489 MSE
+
+Best Models for Boston Housing Data:
+
+Lowess: ~35.492 MSE
+
+Random Forest: ~35.510 MSE
+
+Ultimately, the models are comparable in their effectiveness for modeling the given data in both cases. That said, the lowess approach was marginally more effective for both the mtcars mpg prediction and the boston house price prediction. Notably, the random forest showed a better looking trend line when graphed, but was not as accurate.
+
+## Overall Winner: Lowess Model
