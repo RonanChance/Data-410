@@ -184,7 +184,7 @@ MSE: ~35.532 Tau: 0.09
 MSE: ~35.492 Tau: 0.085
 
 
-Given these results, we will use a tricubic function with a tau of 0.1.
+Given these results, we will use a Epanechnikov kernel with a tau of 0.085.
 
 Here is the python code that was used for calculating and plotting the optimal values. (similar code was repeated for each kernel)
 
@@ -273,6 +273,14 @@ print(lowest_mse, fav_depth, fav_n)
 MSE: ~35.510 n_estimators: 150, max_depth: 2
 
 ## Comparing Lowess and Random Forest Graphically
+
+We find the following:
+
+Lowess: Epanechnikov kernel and 0.085 tau results in a cross validated MSE: ~35.492
+
+RF: 150 n_estimators and 2 max_depth results in a cross validated MSE: ~35.510
+
+Here is our best models compared visually. The black line shows the lowess model, while the red line shows random forest.
 
 <img src="Images/p2/boston_rf_lowess.png" width="450">
 
