@@ -289,15 +289,15 @@ Here is our best models compared visually. The black line shows the lowess model
 
 Best Models for Cars Data:
 
-Lowess: ~**17.486** MSE
+Lowess: ~**17.486** Cross Validated MSE
 
-Random Forest: ~17.489 MSE
+Random Forest: ~17.489 Cross Validated MSE
 
 Best Models for Boston Housing Data:
 
-Lowess: ~**35.492** MSE
+Lowess: ~**35.492** Cross Validated MSE
 
-Random Forest: ~35.510 MSE
+Random Forest: ~35.510 Cross Validated MSE
 
 Ultimately, the models are comparable in their effectiveness for modeling the given data in both cases. That said, the lowess approach with an Epanechnikov kernel was marginally more effective for both the cars mpg prediction and the boston house price prediction. Notably, the random forest showed a better looking trend line when graphed, but was not as accurate. The lowess model is very versatile given its ability to flex to the given data.
 
