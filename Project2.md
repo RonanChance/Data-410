@@ -84,9 +84,9 @@ from sklearn.ensemble import RandomForestRegressor
 
 ---
 
-# Dataset 1: MTCars
+# Dataset 1: Cars
 
-this dataset includes a number of measurements regarding motor cars. In particular, we will look at the relationship between the weight of the cars (in lbs) and the miles per gallon (mpg). The goal is to design a model that can most accurately predict the mpg of a car, given the weight in lbs.
+This dataset includes a number of measurements regarding motor cars. In particular, we will look at the relationship between the weight of the cars (in lbs) and the miles per gallon (mpg). The goal is to design a model that can most accurately predict the mpg of a car, given the weight in lbs.
 
 
 One way to craft a model is to minimize the mean squared error (MSE). To do this, we can iterate over our types of kernels, and a range of possible tau values. For each of these we will build a model, and then perform a k-fold validation to determine the MSE. Keep in mind, this process can take a while because lowess is computationally heavy compared to standard regression models.
@@ -287,7 +287,7 @@ Here is our best models compared visually. The black line shows the lowess model
 ---
 ## Conclusions
 
-Best Models for MTCars Data:
+Best Models for Cars Data:
 
 Lowess: ~**17.486** MSE
 
