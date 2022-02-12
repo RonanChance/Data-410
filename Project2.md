@@ -1,4 +1,4 @@
-# Comparison of Lowess and Random Forest
+# Comparison of LOWESS and Random Forest - Regression Models
 
 
 ## Lowess (locally weighted scatterplot smoothing)
