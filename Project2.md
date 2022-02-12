@@ -161,7 +161,7 @@ RF:  60 n_estimators and 3 max_depth results in a cross validated MSE: ~17.489
 
 Here is our best models compared visually. The black line shows the lowess model, while the red line shows random forest.
 
-<img src="Images/p2/mtcars.png" width="350">
+<img src="Images/p2/mtcars.png" width="450">
 
 ---
 
@@ -274,7 +274,7 @@ MSE: ~35.510 n_estimators: 150, max_depth: 2
 
 ## Comparing Lowess and Random Forest Graphically
 
-<img src="Images/p2/boston_rf_lowess.png" width="350">
+<img src="Images/p2/boston_rf_lowess.png" width="450">
 
 ---
 ## Conclusions
