@@ -299,6 +299,6 @@ Lowess: ~**35.492** MSE
 
 Random Forest: ~35.510 MSE
 
-Ultimately, the models are comparable in their effectiveness for modeling the given data in both cases. That said, the lowess approach was marginally more effective for both the mtcars mpg prediction and the boston house price prediction. Notably, the random forest showed a better looking trend line when graphed, but was not as accurate.
+Ultimately, the models are comparable in their effectiveness for modeling the given data in both cases. That said, the lowess approach was marginally more effective for both the mtcars mpg prediction and the boston house price prediction. Notably, the random forest showed a better looking trend line when graphed, but was not as accurate. The lowess model is very versatile given its ability to flex to the given data.
 
 ## Overall Winner: Lowess Model
