@@ -4,7 +4,10 @@
 Multivariate regression models deal with more than a single predictor for a dependent variable.
 
 The mathematical equation is as follows:
+
 <img src="Images/p3/multiple_eq.png" width="350">
+
+Where we find the weights $w$ that multiply with each feature to optimally describe the relationship to Y. 
 
 ## Boosting
 Boosting is a form of ensemble learning where a strong learner is created from weak learners.To achieve this, two types of ensemble learning can be used: bagging or boosting. Bagging is done in parallel whereas boosting is done sequentially. A bagging strategy will divide up the dataset and train a number of different weak learners, then combine them all to produce a stronger learner. This is different from boosting where the weak learners are created during the training phase where the model is fed the data. Then increased weights are added to the misclassified data points, so that the model can improve on the next iteration - ideally this repeats until all points are classified correctly. 
