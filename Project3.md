@@ -64,7 +64,7 @@ Built in cross-validation during the iterations, meaning you don't have to speci
 
 XGBoost is also intended to be fast and efficient because of the parallel computations. This can be seen in the image below. XGBoost massively reduces the training time compared to gradient boosting and random forest, while also having groundbreaking prediction power.
 
-<img src="Images/p3/pred_power.png" width="300">
+<img src="Images/p3/pred_power.png" width="500">
 
 ## Kernels
 
@@ -89,6 +89,43 @@ Triangular
 Cosine 
 
 <img src="Images/p3/cosine.png" width="250">
+
+```Python
+# Tricubic Kernel
+def Tricubic(x):
+    if len(x.shape) == 1:
+        x = x.reshape(-1,1)
+    d = np.sqrt(np.sum(x**2,axis=1))
+    return np.where(d>1,0,70/81*(1-d**3)**3)
+
+# Quartic Kernel
+def Quartic(x):
+    if len(x.shape) == 1:
+        x = x.reshape(-1,1)
+    d = np.sqrt(np.sum(x**2,axis=1))
+    return np.where(d>1,0,15/16*(1-d**2)**2)
+
+# Epanechnikov Kernel
+def Epanechnikov(x):
+    if len(x.shape) == 1:
+        x = x.reshape(-1,1)
+    d = np.sqrt(np.sum(x**2,axis=1))
+    return np.where(d>1,0,3/4*(1-d**2)) 
+
+# Triangular Kernel
+def Triangular(x):
+    if len(x.shape) == 1:
+        x = x.reshape(-1,1)
+    d = np.sqrt(np.sum(x**2, axis=1))
+    return np.where(d>1, 0, (1-abs(d)))
+
+# Cosine Kernel
+def Cosine(x):
+    if len(x.shape) == 1:
+        x = x.reshape(-1,1)
+    d = np.sqrt(np.sum(x**2,axis=1))
+    return np.where(d>1, 0, np.pi/4*(np.cos(np.pi/2*d)))
+```
 
 # Model Definitions
 
@@ -452,6 +489,7 @@ Similar approaches were used to optimize the hyperparameters for XGBoost, Random
 ### Cars Dataset
 | Model | Cross Validated MSE | Cross Validated MAE
 | --- | ----------- | ----------- | 
+
 | LWR | 17.934 | 3.059 |
 | BLWR | 16.698 | 2.984 |
 | LWR | 16.798 | 2.994 |
@@ -459,6 +497,7 @@ Similar approaches were used to optimize the hyperparameters for XGBoost, Random
 
 ### Concrete Dataset
 | Model | Cross Validated MSE | Cross Validated MAE
+
 | --- | ----------- | ----------- | 
 | LWR | 163.709 | 9.922 |
 | BLWR | 142.708 | 9.627 |
@@ -466,6 +505,8 @@ Similar approaches were used to optimize the hyperparameters for XGBoost, Random
 | XGBoost | 142.432 | 9.615 |
 
 The final results for both datasets concluded that XGBoost was the most effective model for prediction. Not only was the Mean Square Error the lowest in the cars dataset (15.678), but the Mean Absolute Error was also the lowest (2.900). Additionally, the Mean Square Error (142.432) and Mean Absolute Error (9.615) were also the lowest in the concrete dataset. This experiment has show the impressive capabilities that XGBoost has in multiple regression - even without extensive optimization. Further tuning of the hyperparameters would help the model make even more accurate predictions.
+
+The results achieved are expected given background knowledge of how XGBoost builds on classic algorithms. Performance is most similar to Boosted LOWESS, while maintaining a slight edge.
 
 # Sources
 
