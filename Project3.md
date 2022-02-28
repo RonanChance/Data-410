@@ -487,6 +487,7 @@ Similar approaches were used to optimize the hyperparameters for XGBoost, Random
 # Conclusions
 
 ### Cars Dataset
+| --- | ----------- | ----------- | 
 | Model | Cross Validated MSE | Cross Validated MAE |
 | LWR | 17.934 | 3.059 |
 | BLWR | 16.698 | 2.984 |
@@ -494,6 +495,7 @@ Similar approaches were used to optimize the hyperparameters for XGBoost, Random
 | XGBoost | 15.678 | 2.900 |
 
 ### Concrete Dataset
+| --- | ----------- | ----------- | 
 | Model | Cross Validated MSE | Cross Validated MAE |
 | LWR | 163.709 | 9.922 |
 | BLWR | 142.708 | 9.627 |
