@@ -496,9 +496,9 @@ Similar approaches were used to optimize the hyperparameters for XGBoost, Random
 | XGBoost | 15.678 | 2.900 |
 
 ### Concrete Dataset
-| Model | Cross Validated MSE | Cross Validated MAE
 
 | --- | ----------- | ----------- | 
+| Model | Cross Validated MSE | Cross Validated MAE|
 | LWR | 163.709 | 9.922 |
 | BLWR | 142.708 | 9.627 |
 | LWR | 162.002 | 10.454 |
