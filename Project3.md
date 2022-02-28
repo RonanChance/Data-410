@@ -5,14 +5,14 @@ Multivariate regression models deal with more than a single predictor for a depe
 
 The mathematical equation is as follows:
 
-<img src="Images/p3/multiple_eq.png" width="350">
+<img src="Images/p3/multiple_eq.png" width="400">
 
-Where we find the weights $w$ that multiply with each feature to optimally describe the relationship to Y. 
+Where we find the weights that multiply with each feature to optimally describe the relationship to Y. 
 
 ## Boosting
-Boosting is a form of ensemble learning where a strong learner is created from weak learners.To achieve this, two types of ensemble learning can be used: bagging or boosting. Bagging is done in parallel whereas boosting is done sequentially. A bagging strategy will divide up the dataset and train a number of different weak learners, then combine them all to produce a stronger learner. This is different from boosting where the weak learners are created during the training phase where the model is fed the data. Then increased weights are added to the misclassified data points, so that the model can improve on the next iteration - ideally this repeats until all points are classified correctly. 
+Boosting is a form of ensemble learning where a strong learner is created from weak learners. To achieve this, two types of ensemble learning can be used: bagging or boosting. Bagging is done in parallel whereas boosting is done sequentially. A bagging strategy will divide up the dataset and train a number of different weak learners, then combine them all to produce a stronger learner. This is different from boosting where the weak learners are created during the training phase where the model is fed the data. Then increased weights are added to the misclassified data points, so that the model can improve on the next iteration - ideally this repeats until all points are classified correctly. 
 
-<img src="Images/p3/boosting.png" width="350">
+<img src="Images/p3/boosting.png" width="400">
 
 The diagram above helps visualize the difference between the types of ensemble methods.
 
@@ -22,7 +22,7 @@ The diagram above helps visualize the difference between the types of ensemble m
 ### Adaptive Boosting
 Adaptive boosting works by drawing a ‘decision stump’ where a basic machine learning method is applied to the dataset. Then the data weights are updated and the model draws a new decision stump, the result of which becomes incorporated into the overall model. The idea being that the model learns from its misclassifications. Here is a diagram that shows how the model repeatedly and iteratively uses a decision tree to improve its performance.
 
-<img src="Images/p3/decision_stump.png" width="350">
+<img src="Images/p3/decision_stump.png" width="400">
 
 Can be used in classification and regression, but typically applied to classification problems.
 
