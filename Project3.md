@@ -4,7 +4,7 @@
 Multivariate regression models deal with more than a single predictor for a dependent variable.
 
 The mathematical equation is as follows:
-$$ y=\beta_{0}+\beta_{1} \cdot x_{1}+\ldots+\beta_{n} \cdot x_{n} $$
+<img src="Images/p3/multiple_eq.png" width="350">
 
 ## Boosting
 Boosting is a form of ensemble learning where a strong learner is created from weak learners.To achieve this, two types of ensemble learning can be used: bagging or boosting. Bagging is done in parallel whereas boosting is done sequentially. A bagging strategy will divide up the dataset and train a number of different weak learners, then combine them all to produce a stronger learner. This is different from boosting where the weak learners are created during the training phase where the model is fed the data. Then increased weights are added to the misclassified data points, so that the model can improve on the next iteration - ideally this repeats until all points are classified correctly. 
@@ -31,6 +31,42 @@ Also based on the sequential ensemble model. It works by generating base learner
 - Additive model that regularizes loss function
 
 ## Extreme Gradient Boosting (XGBoost)
+
+There are a number of key points to fully understanding the major improvements that XGBoost makes to regular regression models
+- Gradient Boosting
+- Regularization
+- Unique Regression Tree
+- Approximate Greedy Algorithm
+- Weighted Quantile Sketch
+- Sparcity-Aware Split Finding
+- Parallel Learning
+- Cache-Aware Access
+- Blocks for Out-of-Core computation
+
+XGBoost builds trees slightly differently than regular decision trees. It makes certain splits of the data using a root and two children, then calculates similarity scores, and ultimately a gain score. Then it compares this to different splits using this gain, and chooses the largest gain score as the best split.
+
+What is important about the algorithmic improvements can be summarized by these key aspects:
+- Regularization
+
+Penalizes with both LASSO and Ridge regularization which prevents overfitting.
+
+- Sparsity Awareness
+
+Learns the best missing value depeing on training loss, while also handling data more efficiently.
+
+- Weighted Quantile Sketch
+
+An algorithm that helps find the best split points.
+
+- Cross Validation
+
+Built in cross-validation during the iterations, meaning you don't have to specify the number of iterations for boosting.
+
+XGBoost is also intended to be fast and efficient because of the parallel computations. This can be seen in the image below. XGBoost massively reduces the training time compared to gradient boosting and random forest, while also having groundbreaking prediction power.
+
+<img src="Images/p3/pred_power.png" width="300">
+
+## Kernels
 
 To further delve into our exploration I have added a few additional kernel functions, Triangular and Cosine. Here is how they look visually, as well as the accompanying python code.
 
@@ -297,6 +333,31 @@ print('The Cross-validated Mean Squared Error for XGB is :', round(np.mean(mse_x
 
 # Concrete Dataset
 
+This data is slightly different, as it is stored in an excel file. Here is the data processing I performed to make it usable in google colab.
+
+```Python
+!pip install --upgrade xlrd
+concrete = pd.read_excel('/content/drive/MyDrive/ML_410/Data/Concrete_Data.xls')
+concrete.columns = ['Cement', 'Slag', 'Ash', 'Water', 'Superplasticizer', 'CoarseAgg', 'FineAggregate', 'Age', 'Strength']
+X = concrete.iloc[:, :-1].values
+y = concrete.iloc[:, -1].values
+```
+
+
+To start, we are cursed with too many dimensions. While it is possible to use all of the given data, we want to avoid rank deficiency. So we must find a way to reduce the dimensionality and limit our X predictor variables. One way to do this is using principle component analysis (PCA). 
+
+```Python
+pca = PCA(n_components=3)
+# scale the data so that larger values do not appear to explain correlation more than others
+scaled = scale.fit_transform(X)
+pca.fit(scaled)
+print(pca.components_)
+```
+
+<img src="Images/p3/pca.png" width="450">
+
+With these results, we can see how strong of an indicator each independent variable is. Taking the largest 3, with the highest magnitudes (which can mean negative), we find that the best predictors are the cement, slag, and water content of the concrete. These factors will be used to build our multivariate regression model.
+
 To find the bets kernel for LOWESS, I iterated through the kernels and some possible tau values.
 
 ```Python
@@ -386,8 +447,17 @@ Which finds that the best MSE was with a tau value of 0.7
 Similar approaches were used to optimize the hyperparameters for XGBoost, Random Forest, and Boosted LOWESS.
 
 
-### Results are:
+# Conclusions
 
+### Cars Dataset
+| Model | Cross Validated MSE | Cross Validated MAE
+| --- | ----------- | ----------- | 
+| LWR | 17.934 | 3.059 |
+| BLWR | 16.698 | 2.984 |
+| LWR | 16.798 | 2.994 |
+| XGBoost | 15.678 | 2.900 |
+
+### Concrete Dataset
 | Model | Cross Validated MSE | Cross Validated MAE
 | --- | ----------- | ----------- | 
 | LWR | 163.709 | 9.922 |
@@ -395,14 +465,11 @@ Similar approaches were used to optimize the hyperparameters for XGBoost, Random
 | LWR | 162.002 | 10.454 |
 | XGBoost | 142.432 | 9.615 |
 
-
-# Conclusions
-
-
-
-
+The final results for both datasets concluded that XGBoost was the most effective model for prediction. Not only was the Mean Square Error the lowest in the cars dataset (15.678), but the Mean Absolute Error was also the lowest (2.900). Additionally, the Mean Square Error (142.432) and Mean Absolute Error (9.615) were also the lowest in the concrete dataset. This experiment has show the impressive capabilities that XGBoost has in multiple regression - even without extensive optimization. Further tuning of the hyperparameters would help the model make even more accurate predictions.
 
 # Sources
 
 - https://brilliant.org/wiki/multivariate-regression
 - https://towardsdatascience.com/applied-multivariate-regression-faef8ddbf807
+- https://www.youtube.com/watch?v=3CC4N4z3GJc (Gradient Boosting)
+- https://towardsdatascience.com/https-medium-com-vishalmorde-xgboost-algorithm-long-she-may-rein-edd9f99be63d
