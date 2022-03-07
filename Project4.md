@@ -138,7 +138,7 @@ Cross-validated MSE for BLWR is : 140.517 with MAE of: 9.518 # Boosts 2
 Cross-validated MSE for BLWR is : 140.811 with MAE of: 9.53 # Boosts 3
 ```
 
-It does not appear the increasing the number of boosts in beneficial, for this reason, we will use the MSE 140.224 with MAE of: 9.504 as the base to compare LGBM. 
+It does not appear the increasing the number of boosts in beneficial, for this reason, we will use the MSE 140.224 with MAE of: 9.504 as the base to compare LGBM. Therefore the best boosting model was boosted LOWESS using a Tricubic kernel and tau of 1, using a Random Forest regressor with 60 estimators and a max depth of 3, boosted one time. 
 
 ## LightGBM Explanation
 
@@ -261,14 +261,16 @@ print('Cross-validated MSE for LGBM is :', round(np.mean(mse_lgbm), 3), 'with MA
 ```
 
 Results in a Cross-validated MSE for LGBM is : 147.234 with MAE of: 9.857
-
+Results in a Cross-validated MSE for LGBM is : 140.78 with MAE of: 9.588
 
 ## Conclusions
 
+LightGBM was ultimately the most effective predictor of concrete stregth when given 3 varaibles from the feature data. Using the verstack LGBMTuner also enabled us to contruct an accurate model rapidly. Given the substantial performance benefit the LGBM has, it is a clear winner when compared directly to the XGBoost and custom multiple boosting models. 
 
 ## Sources
 https://www.youtube.com/watch?v=n_ZMQj09S6w
 https://en.wikipedia.org/wiki/LightGBM
+https://www.kaggle.com/lasmith/house-price-regression-with-lightgbm
 https://www.analyticssteps.com/blogs/what-light-gbm-algorithm-how-use-it
 https://lightgbm.readthedocs.io/en/latest/Parameters-Tuning.html
 https://towardsdatascience.com/optimise-your-hyperparameter-tuning-with-hyperopt-861573239eb5
