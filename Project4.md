@@ -2,6 +2,7 @@
 
 ## Multiple Boosting on Concrete Dataset
 
+---
 ### Data Processing
 This data is slightly different, as it is stored in an excel file. Here is the data processing I performed to make it usable in google colab.
 
@@ -28,7 +29,11 @@ print(pca.components_)
 
 With these results, we can see how strong of an indicator each independent variable is. Taking the largest 3, with the highest magnitudes (which can mean negative), we find that the best predictors are the cement, slag, and water content of the concrete. These factors will be used to build our multivariate regression model.
 
-### Coding
+---
+
+### Programming
+
+Here is a new definition for a LOWESS function that allows for customized boosting.
 
 ```Python
 def boosted_lwr(X, y, xnew, kern, tau, intercept, model_boosting, nboost):
@@ -133,12 +138,12 @@ for boosts in range(1, 4):
 
 The results are:
 ```
-Cross-validated MSE for BLWR is : 140.224 with MAE of: 9.504 # Boosts 1
-Cross-validated MSE for BLWR is : 140.517 with MAE of: 9.518 # Boosts 2
-Cross-validated MSE for BLWR is : 140.811 with MAE of: 9.53 # Boosts 3
+Cross-validated MSE for BLWR is : 141.508 with MAE of: 9.546 # Boosts 1
+Cross-validated MSE for BLWR is : 141.517 with MAE of: 9.518 # Boosts 2
+Cross-validated MSE for BLWR is : 141.811 with MAE of: 9.53 # Boosts 3
 ```
 
-It does not appear the increasing the number of boosts in beneficial, for this reason, we will use the MSE 140.224 with MAE of: 9.504 as the base to compare LGBM. Therefore the best boosting model was boosted LOWESS using a Tricubic kernel and tau of 1, using a Random Forest regressor with 60 estimators and a max depth of 3, boosted one time. 
+It does not appear the increasing the number of boosts in beneficial, for this reason, we will use the MSE 141.508 with MAE of: 9.546 as the base to compare LGBM. Therefore the best boosting model was boosted LOWESS using a Tricubic kernel and tau of 1, using a Random Forest regressor with 60 estimators and a max depth of 3, boosted one time. 
 
 ## LightGBM Explanation
 
@@ -260,22 +265,27 @@ clear_output()
 print('Cross-validated MSE for LGBM is :', round(np.mean(mse_lgbm), 3), 'with MAE of:', round(np.mean(mae_lgbm), 3))
 ```
 
-Results in a Cross-validated MSE for LGBM is : 140.78 with MAE of: 9.588
+Results in a Cross-validated MSE for LGBM is : 140.780 with MAE of: 9.588
 
 ## Conclusions
 
-LightGBM was ultimately the most effective predictor of concrete stregth when given 3 varaibles from the feature data. Using the verstack LGBMTuner also enabled us to contruct an accurate model rapidly. Given the substantial performance benefit the LGBM has, it is a clear winner when compared directly to the XGBoost and custom multiple boosting models. 
+LightGBM Model:  140.780 MSE, 9.588 MAE
 
+Custom Boosting: 141.508 MSE, 9.546 MAE
+
+LightGBM was ultimately the most effective predictor of concrete stregth when given 3 varaibles from the feature data, however, it was followed closely in MSE by the custom boosting solution. Using the verstack LGBMTuner also enabled us to contruct an accurate model rapidly. Given the substantial performance benefit the LGBM has, it is a clear winner when compared directly to the XGBoost and custom multiple boosting models. 
+
+---
 ## Sources
-https://www.youtube.com/watch?v=n_ZMQj09S6w
+<https://www.youtube.com/watch?v=n_ZMQj09S6w>
 
-https://en.wikipedia.org/wiki/LightGBM
+<https://en.wikipedia.org/wiki/LightGBM>
 
-https://www.kaggle.com/lasmith/house-price-regression-with-lightgbm
+<https://www.kaggle.com/lasmith/house-price-regression-with-lightgbm>
 
-https://www.analyticssteps.com/blogs/what-light-gbm-algorithm-how-use-it
+<https://www.analyticssteps.com/blogs/what-light-gbm-algorithm-how-use-it>
 
-https://lightgbm.readthedocs.io/en/latest/Parameters-Tuning.html
+<https://lightgbm.readthedocs.io/en/latest/Parameters-Tuning.html>
 
-https://towardsdatascience.com/optimise-your-hyperparameter-tuning-with-hyperopt-861573239eb5
+<https://towardsdatascience.com/optimise-your-hyperparameter-tuning-with-hyperopt-861573239eb5>
 
