@@ -1,4 +1,4 @@
-# Repeated Boosting & LGBM 
+# Boosting & LGBM 
 
 ## Multiple Boosting on Concrete Dataset
 
@@ -260,7 +260,6 @@ clear_output()
 print('Cross-validated MSE for LGBM is :', round(np.mean(mse_lgbm), 3), 'with MAE of:', round(np.mean(mae_lgbm), 3))
 ```
 
-Results in a Cross-validated MSE for LGBM is : 147.234 with MAE of: 9.857
 Results in a Cross-validated MSE for LGBM is : 140.78 with MAE of: 9.588
 
 ## Conclusions
@@ -269,8 +268,14 @@ LightGBM was ultimately the most effective predictor of concrete stregth when gi
 
 ## Sources
 https://www.youtube.com/watch?v=n_ZMQj09S6w
+
 https://en.wikipedia.org/wiki/LightGBM
+
 https://www.kaggle.com/lasmith/house-price-regression-with-lightgbm
+
 https://www.analyticssteps.com/blogs/what-light-gbm-algorithm-how-use-it
+
 https://lightgbm.readthedocs.io/en/latest/Parameters-Tuning.html
+
 https://towardsdatascience.com/optimise-your-hyperparameter-tuning-with-hyperopt-861573239eb5
+
