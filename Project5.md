@@ -4,7 +4,6 @@
 
 ## Part 1: Creation of SKLearn Compliant Functions - SCAD & Square Root Lasso
 
----
 ### SCAD
 
 ```Python
@@ -99,11 +98,11 @@ class SQRTLasso(BaseEstimator, RegressorMixin):
 
 ### Part 2: Data Generation of 100 Datasets
 
-#### The following code gives us two lists, hundred_X and hundred_y. Each of these contain 100 lists, that each have a generated toeplitz correlation structure between the features of 0.8. The features have a functional relationship defined below. 
+The following code gives us two lists, hundred_X and hundred_y. Each of these contain 100 lists, that each have a generated toeplitz correlation structure between the features of 0.8. The features have a functional relationship defined below. 
 
-<img src="Images/p5/y_data.png" width="450">
+<img src="Images/p5/y_data.png" width="550">
 
-My code first defines the process to make correlated features, then performs a loop to repeatedly generate these independent and dependent variables while adding them to their respective lists. 
+My code first defines the process to make correlated features, then performs a loop to repeatedly generate these independent and dependent variables while adding them to their respective lists. Ultimately, there are 27 important features that the variable selection methods will have to attempt to deduce.  
 
 ```Python
 np.random.seed(410)
@@ -135,7 +134,8 @@ for iter in range(100):
 beta_star = np.concatenate(( ([1]*7), ([0]*25), ([0.25]*5), ([0]*50), ([0.7]*15), ([0]*1098) ))
 ```
 ---
-#### Also, definition of soft thresholding since not all regularization techniques reduce unimportant features to 0 we must provide a way to categorize near zero terms as zero.
+
+Also, definition of soft thresholding since not all regularization techniques reduce unimportant features to 0 we must provide a way to categorize near zero terms as zero.
 
 ```Python
 def soft_threshold(data, value):
@@ -400,6 +400,18 @@ The root mean square error is:  3.7235592276616827
 --
 
 ## Conclusions
+
+The table below shows how each of the tested methods compare quantitatively on our generated dataset. The values have been rounded to 2 decimal places for ease of comparison.
+
+| Model | MSE | Avg Sparsity Count | Avg L2 Distance | Root MSE
+| --- | --- | --- | --- | --- |
+| Lasso | 16.41 | 14.0 | 3.24 | 5.04 |
+| Ridge | 36.58 | 1189.0 | 2.97 | 5.04 |
+| Elastic Net | 15.61 | 20.0 | 2.62 | 3.77 |
+| SCAD | 39.08 | 637.0 | 2.32 | 5.56 |
+| SQRTLasso | 14.74 | 23.0 | 1.74 | 3.72 |
+
+The final results show that the SQRTLasso method is superior in MSE, Sparsity values, L2 distance, and Root MSE. Incredibly, it outperfomed all other methods in all areas measured. 
 
 ### Resources
 
