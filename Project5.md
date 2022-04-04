@@ -96,7 +96,7 @@ class SQRTLasso(BaseEstimator, RegressorMixin):
 ```
 ---
 
-### Part 2: Data Generation of 100 Datasets
+## Part 2: Data Generation of 100 Datasets
 
 The following code gives us two lists, hundred_X and hundred_y. Each of these contain 100 lists, that each have a generated toeplitz correlation structure between the features of 0.8. The features have a functional relationship defined below. 
 
@@ -150,7 +150,7 @@ def soft_threshold(data, value):
 
 ---
 
-### Part 3: Variable Selection Techniques
+## Part 3: Variable Selection Techniques
 
 ## Lasso
 
@@ -397,7 +397,7 @@ Average l2 distnace:  1.737348761040297
 
 The root mean square error is:  3.7235592276616827
 
---
+---
 
 ## Conclusions
 
@@ -411,7 +411,9 @@ The table below shows how each of the tested methods compare quantitatively on o
 | SCAD | 39.08 | 637.0 | 2.32 | 5.56 |
 | SQRTLasso | 14.74 | 23.0 | 1.74 | 3.72 |
 
-The final results show that the SQRTLasso method is superior in MSE, Sparsity values, L2 distance, and Root MSE. Incredibly, it outperfomed all other methods in all areas measured. 
+The final results show that the SQRTLasso method is superior in MSE, Sparsity values, L2 distance, and Root MSE. Incredibly, it outperfomed all other methods in all areas measured. It also averaged very closely to the correct sparsity number. Our test datasets has 27 important features, and SQRTLasso averaged 23. This is followed most closely to Elastic Net with 20 features, which combines both L1 and L2 regularization.
+
+Ultimately, the winner for this project is SQRTLasso.
 
 ### Resources
 
