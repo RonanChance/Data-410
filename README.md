@@ -1,5 +1,7 @@
 # Machine Learning Projects List
 
+## [Project 6](Project6.md) (Research Proposal)
+
 ## [Project 5](Project5.md) (Regularization and Variable Selection Techniques)
 
 ## [Project 4](Project4.md) (Multiple Boosting & LightGBM)
