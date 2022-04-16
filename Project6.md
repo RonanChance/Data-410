@@ -1,9 +1,10 @@
 # Research Proposal
 
-My research goal is to find the most effective method of classifying URLs as benign or malicious. To achieve my research goal, I will use boosting methods to create strong learners from weak learners. I will expand on current research by exploring the effectiveness of Random Forest, Adaboost, XGBoost, and LightGBM. Additionally, I will examine the benefit of implementing a Synthetic Minority Oversampling Technique (SMOTE) on the imbalanced dataset.
+My research goal is to find an effective method of classifying URLs as benign or malicious. To achieve my research goal, I will use boosting methods to create strong learners from weak learners. I will expand on current research by exploring the effectiveness of Random Forest, Adaboost, XGBoost, and LightGBM. Additionally, I will examine the benefit of implementing a Synthetic Minority Oversampling Technique (SMOTE) on the imbalanced dataset.
 
 The dataset of interest is the Malicious Urls Dataset, found on Kaggle:
-https://www.kaggle.com/datasets/sid321axn/malicious-urls-dataset
+
+<https://www.kaggle.com/datasets/sid321axn/malicious-urls-dataset>
 
 It contains 651,191 URLs in total. Of these, the majority are completely safe, but the remaining URLs are either defacement, phishing, or malware.
 
