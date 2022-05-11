@@ -1,4 +1,5 @@
 # Machine Learning Projects List
+## [Project 7](Project6.md) (Final Project - Classifying URLs)
 
 ## [Project 6](Project6.md) (Research Proposal)
 
