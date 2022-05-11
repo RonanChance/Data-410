@@ -578,6 +578,10 @@ Given Data             |  Oversampled Data
 :-------------------------:|:-------------------------:
 <img src="Images/p7/benchmark3d.png">  |  <img src="Images/p7/benchmark23d.png">
 
+Given Data             |  Oversampled Data
+:-------------------------:|:-------------------------:
+<img src="Images/p7/breakdown.png">  |  <img src="Images/p7/breakdown2.png">
+
 
 ## Conclusion
 The need for contextual clues in determining malicious links. For example, a history of malicious services on the link domain show the potential for abuse. These historical data points could be obtained from google transparency report, or resources like URLVoid. Part of the complexity of this classification problem also stems from the dataset. Some links are categoriezed as 'defacement' as they once were, but have since been re-establised as benign websites.
