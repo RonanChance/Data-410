@@ -2,7 +2,7 @@
 
 My research goal is to find an effective method of classifying URLs into categories of benign, defacement, phishing, and malware. I will be expanding on current research by exploring the effectiveness of Random Forest, Adaboost, XGBoost, and LightGBM. Finally in the latter stages I will discuss the benefits of implementing an Adaptive Synthetic (ADASYN) algorithm on the imbalanced dataset.
 
-## Setup
+<!-- ## Setup
 I used the following libraries to perform my research, I am listing them here for ease of replication of my results.
 ```Python
 import re
@@ -35,7 +35,7 @@ from sklearn.neighbors import KNeighborsClassifier as KNN
 from sklearn.model_selection import train_test_split as tts
 from sklearn.model_selection import GridSearchCV, RandomizedSearchCV
 from sklearn.metrics import confusion_matrix, classification_report, accuracy_score
-```
+``` -->
 ## Data Pre-Processing
 The dataset is from Kaggle, and can be found at <https://www.kaggle.com/datasets/sid321axn/malicious-urls-dataset>
 
@@ -212,6 +212,61 @@ X = data.drop(['url','type','category'],axis=1)
 y = data['category']
 ```
 
+## Data Exploration
+Before we begin feeding the data into the models, I'd like to take a second to better understand our features. While it won't be possible to be model past the 3rd dimension, just a slight bit of visualization always helps me.
+
+First I'll transform the data to be normalized
+```Python
+transformed_data = scale.fit_transform(X[:][['urlLen', 'capitalToLower', '.']])
+transformed_data = preprocessing.normalize(transformed_data)
+transformed_data
+```
+
+Then I would like to assign colors to the types of categories.
+- Blue: Benign
+- Orange: Defacement
+- Green: Phishing
+- Pink: Malware
+
+```Python
+colors = ['#469fe3' if v == 0 else '#ef8a62' if v == 1 else '#54d177' if v == 2 else '#ff00f7' for v in y]
+kwarg_params = {'linewidth': 0.3, 'edgecolor': 'black'}
+plt.figure(figsize=(14,10))
+plt.scatter(transformed_data[:, 0], transformed_data[:, 1], c=colors, **kwarg_params)
+plt.xlabel("urlLen")
+plt.ylabel("capitalToLower")
+sns.despine()
+plt.suptitle("Benchmark Data")
+```
+
+This visualization shows the URL length and Capital to Lowercase letter ratios.
+
+<img src="Images/p7/benchmark.png" width="450">
+
+Additionally, I think it could be helpful to expand this visualizing to also include another datapoint beyong just URL length and Capital to Lowercase ratio, so lets add a count of periods '.' in the URL. 
+
+```Python
+sns.set(style = "darkgrid")
+
+fig = plt.figure(figsize=(10, 8), dpi=100)
+ax = fig.add_subplot(111, projection = '3d')
+
+ax.set_xlabel("urlLen")
+ax.set_ylabel("capitalToLower")
+ax.set_zlabel(".")
+
+kwarg_params = {'linewidth': 0.2, 'edgecolor': 'black'}
+colors = ['#469fe3' if v == 0 else '#ef8a62' if v == 1 else '#54d177' if v == 2 else '#ff00f7' for v in y]
+ax.scatter(transformed_data[:, 0], transformed_data[:, 1], transformed_data[:, 2],  cmap = 'coolwarm', c=colors, **kwarg_params)
+plt.suptitle("Benchmark Data")
+plt.show()
+```
+
+<img src="Images/p7/benchmark3d.png" width="450">
+
+This 3D plot now shows the three variables, colorcoded the same as before. It also starts to show the complexity of categorizing URLs. To me, there appears to be noticible (but hardly absolute) regions that distinguish classifications. 
+
+
 ## Quick Rough Comparison of Algorithms
 
 ### Model: Decision Tree
@@ -336,6 +391,156 @@ print(random_search.best_estimator_)
 ```
 Score; 0.862
 Model: LGBMClassifier(learning_rate=0.6, max_bin=75, n_estimators=192, num_class=4, num_leaves=40, objective='multiclass')
+
+### Results from Quick Testing
+
+| Model | Mean Cross-Validated Score 
+| --- | --- |
+| Decision Tree | 0.845 |
+| Random Forest | 0.856 |
+| KNN | 0.714 |
+| Gradient Boosting | 0.861 |
+| AdaBoost | 0.608 |
+| XGBoost | 0.862 |
+| LGBM | 0.862 |
+
+
+Given these results, I would like to further explore the potential of Random Forest, Adaboost, LGBM, and XGBoost.
+
+## Analyzing Model Performence 
+
+To better understand which of the above models has the best potential for real world application, I want to cross validate the results further and obtain more information.
+
+- Accuracy Scores
+- Sensitivity Scores
+- Specificity Scores
+- Micro F1 Scores
+- Mactro F1 Scores
+
+The following chunk of code is a reusable way to gather all this information from each model.
+
+
+```Python
+def cross_val_predict(model, kfold : KFold, X : np.array, y : np.array) -> Tuple[np.array, np.array, np.array]:
+    accscoreslist = []
+    sensitivitylist = []
+    specificitylist = []
+    f1microlist = []
+    f1macrolist = []
+    model_ = copy.deepcopy(model)
+    no_classes = len(np.unique(y))
+    
+    actual_classes = np.empty([0], dtype=int)
+    predicted_classes = np.empty([0], dtype=int)
+    predicted_proba = np.empty([0, no_classes]) 
+
+    for train_ndx, test_ndx in kfold.split(X):
+
+        train_X, train_y, test_X, test_y = X[train_ndx], y[train_ndx], X[test_ndx], y[test_ndx]
+
+        model_.fit(train_X, train_y)
+        actual_classes = np.append(actual_classes, test_y)
+        predicted_classes = np.append(predicted_classes, model_.predict(test_X))
+        
+        accscoreslist.append(accuracy_score(predicted_classes, actual_classes))
+
+        confusion = metrics.confusion_matrix(actual_classes, predicted_classes)
+        TP = confusion[1, 1]
+        TN = confusion[0, 0]
+        FP = confusion[0, 1]
+        FN = confusion[1, 0]
+        
+        sensitivity = TP / float(FN + TP)
+        sensitivitylist.append(sensitivity)
+
+        specificity = TN / (TN + FP)
+        specificitylist.append(specificity)
+
+        f1micro = metrics.f1_score(actual_classes, predicted_classes, average='micro')
+        f1microlist.append(f1micro)
+        
+        f1macro = metrics.f1_score(actual_classes, predicted_classes, average='macro')
+        f1macrolist.append(f1macro)
+
+        try:
+            predicted_proba = np.append(predicted_proba, model_.predict_proba(test_X), axis=0)
+        except:
+            predicted_proba = np.append(predicted_proba, np.zeros((len(test_X), no_classes), dtype=float), axis=0)
+
+    return actual_classes, predicted_classes, predicted_proba, mean(accscoreslist), mean(sensitivitylist), mean(specificitylist), mean(f1microlist), mean(f1macrolist)
+
+def plot_confusion_matrix(actual_classes : np.array, predicted_classes : np.array, sorted_labels : list, namemodel : str):
+
+    matrix = confusion_matrix(actual_classes, predicted_classes, labels=sorted_labels)
+    
+    plt.figure(figsize=(12.8,6))
+    mylabels = ['Benign', 'Defacement', 'Phishing', 'Malware']
+    sns.heatmap(matrix, annot=True, xticklabels=mylabels, yticklabels=mylabels, fmt="g", center=1)
+    plt.xlabel('Predicted'); plt.ylabel('Actual'); plt.title(namemodel)
+
+    plt.show()
+```
+
+This code runs the above functions while switching out each model.
+
+```Python
+kfold = KFold(n_splits=5, random_state=0, shuffle=True)
+
+# New Model
+print('---- Model: Adaboost ---- ')
+model = AdaBoostClassifier(n_estimators=110, random_state=0)
+actual_classes, predicted_classes, predicted_proba, avgacc, avgsensitivity, avgspecificity, avgf1micro, avgf1macro = cross_val_predict(model, kfold, X.to_numpy(), y.to_numpy())
+plot_confusion_matrix(actual_classes, predicted_classes, [0, 1, 2, 3], "Confusion Matrix - Adaboost")
+print('Avg Cross-Val Accuracy:', round(avgacc*100, 2), '%')
+print('Avg Cross-Val Sensitivity:', round(avgsensitivity, 3))
+print('Avg Cross-Val Specificity:', round(avgspecificity, 3))
+print('Avg Cross-Val MicroF1:', round(avgf1micro, 2))
+print('Avg Cross-Val MacroF1:', round(avgf1macro, 2))
+
+# New Model
+print('---- Model: LGBM ---- ')
+model = lgb.LGBMClassifier(learning_rate=0.6, max_bin=75, n_estimators=192, num_class=4, num_leaves=40, objective='multiclass', random_state=0)
+actual_classes, predicted_classes, predicted_proba, avgacc, avgsensitivity, avgspecificity, avgf1micro, avgf1macro = cross_val_predict(model, kfold, X.to_numpy(), y.to_numpy())
+plot_confusion_matrix(actual_classes, predicted_classes, [0, 1, 2, 3], "Confusion Matrix - LightGBM")
+print('Avg Cross-Val Accuracy:', round(avgacc*100, 2), '%')
+print('Avg Cross-Val Sensitivity:', round(avgsensitivity, 3))
+print('Avg Cross-Val Specificity:', round(avgspecificity, 3))
+print('Avg Cross-Val MicroF1:', round(avgf1micro, 2))
+print('Avg Cross-Val MacroF1:', round(avgf1macro, 2))
+
+# New Model
+print('---- Model: XGBoost ---- ')
+model = XGBClassifier(learning_rate=0.5, max_delta_step=4, max_depth=6, n_estimators=35, objective='multi:softprob')
+actual_classes, predicted_classes, predicted_proba, avgacc, avgsensitivity, avgspecificity, avgf1micro, avgf1macro = cross_val_predict(model, kfold, X.to_numpy(), y.to_numpy())
+plot_confusion_matrix(actual_classes, predicted_classes, [0, 1, 2, 3], "Confusion Matrix - XGBoost")
+print('Avg Cross-Val Accuracy:', round(avgacc*100, 2), '%')
+print('Avg Cross-Val Sensitivity:', round(avgsensitivity, 3))
+print('Avg Cross-Val Specificity:', round(avgspecificity, 3))
+print('Avg Cross-Val MicroF1:', round(avgf1micro, 2))
+print('Avg Cross-Val MacroF1:', round(avgf1macro, 2))
+
+# New Model
+print('---- Model: Random Forest Classifier ---- ')
+model = RandomForestClassifier(max_depth=41, min_samples_split=3, random_state=0)
+actual_classes, predicted_classes, predicted_proba, avgacc, avgsensitivity, avgspecificity, avgf1micro, avgf1macro = cross_val_predict(model, kfold, X.to_numpy(), y.to_numpy())
+plot_confusion_matrix(actual_classes, predicted_classes, [0, 1, 2, 3], "Confusion Matrix - Random Forest Classifier")
+print('Avg Cross-Val Accuracy:', round(avgacc*100, 2), '%')
+print('Avg Cross-Val Sensitivity:', round(avgsensitivity, 3))
+print('Avg Cross-Val Specificity:', round(avgspecificity, 3))
+print('Avg Cross-Val MicroF1:', round(avgf1micro, 2))
+print('Avg Cross-Val MacroF1:', round(avgf1macro, 2))
+```
+
+I have summarized the results in tabular form:
+
+| Measurement | AdaBoost | LightGBM | XGBoost | Random Forest
+| --- | --- | --- | --- | --- |
+| Accuracy | 60.88% | 85.94% | 97.53% | 97.50%|
+| Sensitivity | 0.948 | 0.798 | 0.976 | 0.975 |
+| Specificity | 0.983 | 0.949 | 0.997| 0.998 |
+| Micro F1 | 0.61 | 0.86 | 0.98 | 0.97 |
+| Macro F1 | 0.48 | 0.68 | 0.90 | 0.90 |
+
 
 ## Conclusion
 The need for contextual clues in determining malicious links. For example, a history of malicious services on the link domain show the potential for abuse. These historical data points could be obtained from google transparency report, or resources like URLVoid. Part of the complexity of this classification problem also stems from the dataset. Some links are categoriezed as 'defacement' as they once were, but have since been re-establised as benign websites.
