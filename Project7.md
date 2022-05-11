@@ -39,6 +39,14 @@ from sklearn.metrics import confusion_matrix, classification_report, accuracy_sc
 ## Data Pre-Processing
 The dataset is from Kaggle, and can be found at <https://www.kaggle.com/datasets/sid321axn/malicious-urls-dataset>
 
+It contains 651,191 URLs in total. Of these, the majority are completely safe, but the remaining URLs are either defacement, phishing, or malware.
+
+The percentage breakdown of the URLs is as follows:
+- Safe (~65.74%)
+- Defacement (~14.81%)
+- Phishing (~14.45%)
+- Malware (~4.99%)
+
 ```Python
 data = pd.read_csv('/content/drive/MyDrive/ML_410/FinalProject/malicious_phish.csv'
 
@@ -65,6 +73,17 @@ data = data.replace(categories)
 ## Feature Extraction
 
 We now have a dataset that contains the URLs and their classifications, but we need to have features to train our models on. Instead of taking a natural language processing approach, I would like to approach this situation by extracting more data out of each sample in the form of quantities. 
+
+Features to Extract:
+- Count of each special character
+- Number of digits
+- Number of letters
+- Does link uses shortening service
+- Does link contain IP address
+- Is link in ascii readable format
+- Capital to Lowercase Ratio
+- Check top level domain (TLD)
+- Find length of longest repeating subsequence
 
 This code takes count of the number of each special character in every URL. 
 
@@ -632,4 +651,6 @@ https://towardsdatascience.com/how-to-plot-a-confusion-matrix-from-a-k-fold-cros
 https://www.ritchieng.com/machine-learning-evaluate-classification-model/
 
 https://datascience.stackexchange.com/questions/15989/micro-average-vs-macro-average-performance-in-a-multiclass-classification-settin
+
+https://www.kaggle.com/code/residentmario/oversampling-with-smote-and-adasyn
 
