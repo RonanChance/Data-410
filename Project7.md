@@ -392,7 +392,7 @@ print(random_search.best_estimator_)
 Score; 0.862
 Model: LGBMClassifier(learning_rate=0.6, max_bin=75, n_estimators=192, num_class=4, num_leaves=40, objective='multiclass')
 
-### Results from Quick Testing
+### Results from Testing
 
 | Model | Mean Cross-Validated Score 
 | --- | --- |
@@ -531,6 +531,17 @@ print('Avg Cross-Val MicroF1:', round(avgf1micro, 2))
 print('Avg Cross-Val MacroF1:', round(avgf1macro, 2))
 ```
 
+Here are the four heatmaps from the results. 
+
+AdaBoost             |  LightGBM
+:-------------------------:|:-------------------------:
+<img src="Images/p7/adaheat1.png">  |  <img src="Images/p7/lgbmheat1.png">
+
+XGBoost             |  Random Forest
+:-------------------------:|:-------------------------:
+<img src="Images/p7/xgboostheat1.png">  |  <img src="Images/p7/rfheat1.png">
+
+
 I have summarized the results in tabular form:
 
 | Measurement | AdaBoost | LightGBM | XGBoost | Random Forest
@@ -541,6 +552,18 @@ I have summarized the results in tabular form:
 | Micro F1 | 0.61 | 0.86 | 0.98 | 0.97 |
 | Macro F1 | 0.48 | 0.68 | 0.90 | 0.90 |
 
+## Adaptive Synthetic OverSampling (ADASYN)
+
+Since the dataset is completely imbalanced with the majority of observations being benign, it is worth considering crafting a balanced dataset and seeing how the algorithms perform.
+
+ADASYN lets us do this in just a few lines of code!
+
+```Python
+ada = ADASYN(random_state=0)
+X_resamp, y_resamp = ada.fit_resample(X, y)
+transformed_data = scale.fit_transform(X_resamp[:][['urlLen', 'capitalToLower', '.']])
+transformed_data = preprocessing.normalize(transformed_data)
+```
 
 ## Conclusion
 The need for contextual clues in determining malicious links. For example, a history of malicious services on the link domain show the potential for abuse. These historical data points could be obtained from google transparency report, or resources like URLVoid. Part of the complexity of this classification problem also stems from the dataset. Some links are categoriezed as 'defacement' as they once were, but have since been re-establised as benign websites.
