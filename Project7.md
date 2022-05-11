@@ -569,9 +569,15 @@ transformed_data = preprocessing.normalize(transformed_data)
 
 This visualization shows the URL length and Capital to Lowercase letter ratios with our newly resampled data. The 3d version also contains a count of periods '.' in the url.
 
-<img src="Images/p7/benchmark2.png" width="650">
 
-<img src="Images/p7/benchmark23d.png" width="650">
+Given Data            |  Oversampled Data
+:-------------------------:|:-------------------------:
+<img src="Images/p7/benchmark.png">  |  <img src="Images/p7/benchmark2.png">
+
+Given Data             |  Oversampled Data
+:-------------------------:|:-------------------------:
+<img src="Images/p7/benchmark3d.png">  |  <img src="Images/p7/benchmark23d.png">
+
 
 ## Conclusion
 The need for contextual clues in determining malicious links. For example, a history of malicious services on the link domain show the potential for abuse. These historical data points could be obtained from google transparency report, or resources like URLVoid. Part of the complexity of this classification problem also stems from the dataset. Some links are categoriezed as 'defacement' as they once were, but have since been re-establised as benign websites.
