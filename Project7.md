@@ -582,6 +582,26 @@ Given Data             |  Oversampled Data
 :-------------------------:|:-------------------------:
 <img src="Images/p7/breakdown.png">  |  <img src="Images/p7/breakdown2.png">
 
+## Rerunning Tests using Oversampled Data
+
+AdaBoost             |  LightGBM
+:-------------------------:|:-------------------------:
+<img src="Images/p7/adaheat2.png">  |  <img src="Images/p7/lgbmheat2.png">
+
+XGBoost             |  Random Forest
+:-------------------------:|:-------------------------:
+<img src="Images/p7/xgboostheat2.png">  |  <img src="Images/p7/rfheat2.png">
+
+
+And here are the statistics repors in tabular form:
+
+| Measurement | AdaBoost | LightGBM | XGBoost | Random Forest
+| --- | --- | --- | --- | --- |
+| Accuracy | 56.70% | 88.87% | 93.55% | 96.84%|
+| Sensitivity | 0.982 | 0.974 | 0.998 | 0.999 |
+| Specificity | 0.930 | 0.973 | 0.987| 0.990 |
+| Micro F1 | 0.57 | 0.89 | 0.94 | 0.97 |
+| Macro F1 | 0.56 | 0.89 | 0.94 | 0.97 |
 
 ## Conclusion
 The need for contextual clues in determining malicious links. For example, a history of malicious services on the link domain show the potential for abuse. These historical data points could be obtained from google transparency report, or resources like URLVoid. Part of the complexity of this classification problem also stems from the dataset. Some links are categoriezed as 'defacement' as they once were, but have since been re-establised as benign websites.
