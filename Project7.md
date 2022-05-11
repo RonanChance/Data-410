@@ -1,42 +1,8 @@
 # Malicious Phish
 
-My research goal is to find an effective method of classifying URLs into categories of benign, defacement, phishing, and malware. I will be expanding on current research by exploring the effectiveness of Random Forest, Adaboost, XGBoost, and LightGBM. Finally in the latter stages I will discuss the benefits of implementing an Adaptive Synthetic (ADASYN) algorithm on the imbalanced dataset.
+My research goal is to find an effective method of classifying URLs into categories of benign, defacement, phishing, and malware. I will be expanding on current research by exploring the effectiveness of Random Forest, Adaboost, XGBoost, and LightGBM. Finally I will discuss the benefits of implementing an Adaptive Synthetic (ADASYN) algorithm on the imbalanced dataset.
 
-<!-- ## Setup
-I used the following libraries to perform my research, I am listing them here for ease of replication of my results.
-```Python
-import re
-import copy
-import numpy as np
-import pandas as pd
-import seaborn as sea
-import seaborn as sns
-import lightgbm as lgb
-from tld import get_tld
-from typing import Tuple
-from statistics import mean
-from sklearn import metrics
-import matplotlib.pyplot as plt
-from xgboost import XGBClassifier
-from sklearn import preprocessing
-from mpl_toolkits.mplot3d import Axes3D
-from IPython.display import clear_output
-from sklearn.model_selection import KFold
-from imblearn.over_sampling import ADASYN
-from sklearn.metrics import accuracy_score
-from sklearn.ensemble import AdaBoostClassifier
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.preprocessing import StandardScaler
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import mean_squared_error as MSE
-from sklearn.metrics import mean_absolute_error as MAE
-from sklearn.ensemble import GradientBoostingClassifier
-from sklearn.neighbors import KNeighborsClassifier as KNN
-from sklearn.model_selection import train_test_split as tts
-from sklearn.model_selection import GridSearchCV, RandomizedSearchCV
-from sklearn.metrics import confusion_matrix, classification_report, accuracy_score
-``` -->
-## Data Pre-Processing
+## Setup & Data Pre-Processing
 The dataset is from Kaggle, and can be found at <https://www.kaggle.com/datasets/sid321axn/malicious-urls-dataset>
 
 It contains 651,191 URLs in total. Of these, the majority are completely safe, but the remaining URLs are either defacement, phishing, or malware.
@@ -630,6 +596,21 @@ And here are the statistics repors in tabular form:
 | Micro F1 | 0.57 | 0.89 | 0.94 | 0.97 |
 | Macro F1 | 0.56 | 0.89 | 0.94 | 0.97 |
 
+## Results Summary 
+Some definitions and understandings:
+
+- *Classification Accuracy*: Overall, how often is the classifier correct?
+
+- *Sensitivity*: When the actual value is positive, how often is the prediction correct?
+
+- *Specificity*: When the actual value is negative, how often is the prediction correct?
+
+- The *F1* score serves as a helpful metric that considers both precision and recall.
+
+- We use *micro-averaging score* when there is a need to weight each instance or prediction equally
+
+- We use *macro-averaging* score when all classes need to be treated equally to evaluate the overall performance of the classifier with regard to the most frequent class labels.
+
 ## Conclusion
 The need for contextual clues in determining malicious links. For example, a history of malicious services on the link domain show the potential for abuse. These historical data points could be obtained from google transparency report, or resources like URLVoid. Part of the complexity of this classification problem also stems from the dataset. Some links are categoriezed as 'defacement' as they once were, but have since been re-establised as benign websites.
 
@@ -639,18 +620,22 @@ Additional research could explore natural language processing techniques of anal
 
 ## Sources
 
-https://www.lifewire.com/how-to-test-a-suspicious-link-without-clicking-it-2487171
-https://blog.hubspot.com/marketing/check-link-site
+<https://www.lifewire.com/how-to-test-a-suspicious-link-without-clicking-it-2487171>
 
-https://medium.com/apprentice-journal/evaluating-multi-class-classifiers-12b2946e755b
+<https://blog.hubspot.com/marketing/check-link-site>
 
-https://www.ritchieng.com/machine-learning-evaluate-classification-model/
+<https://medium.com/apprentice-journal/evaluating-multi-class-classifiers-12b2946e755b>
 
-https://towardsdatascience.com/how-to-plot-a-confusion-matrix-from-a-k-fold-cross-validation-b607317e9874
+<https://www.ritchieng.com/machine-learning-evaluate-classification-model/>
 
-https://www.ritchieng.com/machine-learning-evaluate-classification-model/
+<https://towardsdatascience.com/how-to-plot-a-confusion-matrix-from-a-k-fold-cross-validation-b607317e9874>
 
-https://datascience.stackexchange.com/questions/15989/micro-average-vs-macro-average-performance-in-a-multiclass-classification-settin
+<https://www.ritchieng.com/machine-learning-evaluate-classification-model/>
 
-https://www.kaggle.com/code/residentmario/oversampling-with-smote-and-adasyn
+<https://datascience.stackexchange.com/questions/15989/micro-average-vs-macro-average-performance-in-a-multiclass-classification-settin>
 
+<https://www.kaggle.com/code/residentmario/oversampling-with-smote-and-adasyn>
+
+<https://towardsdatascience.com/how-to-plot-a-confusion-matrix-from-a-k-fold-cross-validation-b607317e9874>
+
+<https://vitalflux.com/micro-average-macro-average-scoring-metrics-multi-class-classification-python/>
