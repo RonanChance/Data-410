@@ -584,13 +584,21 @@ Given Data             |  Oversampled Data
 
 ## Rerunning Tests using Oversampled Data
 
-AdaBoost             |  LightGBM
+AdaBoost             |  Oversampled AdaBoost
 :-------------------------:|:-------------------------:
-<img src="Images/p7/adaheat2.png">  |  <img src="Images/p7/lgbmheat2.png">
+<img src="Images/p7/adaheat1.png">  |  <img src="Images/p7/adaheat2.png">
 
-XGBoost             |  Random Forest
+LightGBM            |  Oversampled LightGBM
 :-------------------------:|:-------------------------:
-<img src="Images/p7/xgboostheat2.png">  |  <img src="Images/p7/rfheat2.png">
+<img src="Images/p7/lgbmheat1.png">  |  <img src="Images/p7/lgbmheat2.png">
+
+XGBoost             |  Oversampled XGBoost
+:-------------------------:|:-------------------------:
+<img src="Images/p7/xgboostheat1.png">  |  <img src="Images/p7/xgboostheat2.png">
+
+Random Forest            |  Oversampled Random Forest
+:-------------------------:|:-------------------------:
+<img src="Images/p7/rfheat1.png">  |  <img src="Images/p7/rfheat2.png">
 
 
 And here are the statistics repors in tabular form:
