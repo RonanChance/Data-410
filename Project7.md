@@ -241,7 +241,7 @@ plt.suptitle("Benchmark Data")
 
 This visualization shows the URL length and Capital to Lowercase letter ratios.
 
-<img src="Images/p7/benchmark.png" width="450">
+<img src="Images/p7/benchmark.png" width="650">
 
 Additionally, I think it could be helpful to expand this visualizing to also include another datapoint beyong just URL length and Capital to Lowercase ratio, so lets add a count of periods '.' in the URL. 
 
@@ -262,7 +262,7 @@ plt.suptitle("Benchmark Data")
 plt.show()
 ```
 
-<img src="Images/p7/benchmark3d.png" width="450">
+<img src="Images/p7/benchmark3d.png" width="650">
 
 This 3D plot now shows the three variables, colorcoded the same as before. It also starts to show the complexity of categorizing URLs. To me, there appears to be noticible (but hardly absolute) regions that distinguish classifications. 
 
@@ -552,7 +552,7 @@ I have summarized the results in tabular form:
 | Micro F1 | 0.61 | 0.86 | 0.98 | 0.97 |
 | Macro F1 | 0.48 | 0.68 | 0.90 | 0.90 |
 
-## Adaptive Synthetic OverSampling (ADASYN)
+## Adaptive Synthetic Oversampling (ADASYN)
 
 Since the dataset is completely imbalanced with the majority of observations being benign, it is worth considering crafting a balanced dataset and seeing how the algorithms perform.
 
@@ -564,6 +564,14 @@ X_resamp, y_resamp = ada.fit_resample(X, y)
 transformed_data = scale.fit_transform(X_resamp[:][['urlLen', 'capitalToLower', '.']])
 transformed_data = preprocessing.normalize(transformed_data)
 ```
+
+## Re-Exploring Oversampled Data 
+
+This visualization shows the URL length and Capital to Lowercase letter ratios with our newly resampled data. The 3d version also contains a count of periods '.' in the url.
+
+<img src="Images/p7/benchmark2.png" width="650">
+
+<img src="Images/p7/benchmark23d.png" width="650">
 
 ## Conclusion
 The need for contextual clues in determining malicious links. For example, a history of malicious services on the link domain show the potential for abuse. These historical data points could be obtained from google transparency report, or resources like URLVoid. Part of the complexity of this classification problem also stems from the dataset. Some links are categoriezed as 'defacement' as they once were, but have since been re-establised as benign websites.
