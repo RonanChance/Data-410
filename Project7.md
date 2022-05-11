@@ -284,6 +284,58 @@ Score: 0.714
 Model: KNeighborsClassifier(algorithm='kd_tree', leaf_size=50, n_neighbors=2,
                      weights='distance')
 
+### Model: AdaBoost
+```Python
+random_search = RandomizedSearchCV(AdaBoostClassifier(random_state=0),
+                           {
+                              'n_estimators':np.arange(30,150,2)
+                            },cv=3, scoring="balanced_accuracy",verbose=1,n_jobs=-1, 
+                             n_iter=30, random_state = 0
+                           )
+random_search.fit(X,y)
+print(random_search.best_score_, random_search.best_params_)
+print(random_search.best_estimator_)
+```
+Score: 0.608
+Model: AdaBoostClassifier(n_estimators=110)
+
+### Model: XGBoost Classifier
+```Python
+random_search = RandomizedSearchCV(XGBClassifier(random_state=0, objective='multiclass'),
+                           {
+                            'n_estimators':np.arange(30,140,5),
+                            'learning_rate':[0.2, 0.3, 0.5, 0.8, 1],
+                            'gamma':np.arange(0, 10, 1),
+                            'max_depth':np.arange(4,16,2),
+                            'max_delta_step':np.arange(0, 5, 1)
+                            },cv=3, scoring="balanced_accuracy",verbose=1,n_jobs=-1, 
+                             n_iter=50, random_state = 0
+                           )
+random_search.fit(X,y)
+print(random_search.best_score_, random_search.best_params_)
+print(random_search.best_estimator_)
+```
+Score: 0.862
+Model: XGBClassifier(learning_rate=0.5, max_delta_step=4, max_depth=6, n_estimators=35,
+              objective='multi:softprob')
+
+### Model: LGBM Classifier
+```Python
+random_search = RandomizedSearchCV(lgb.LGBMClassifier(random_state=0, objective='multiclass', num_class=4),
+                           {
+                            'n_estimators':np.arange(50,200,2),
+                            'max_bin':np.arange(50,600, 25),
+                            'learning_rate':np.arange(0.1, 0.9, 0.1),
+                            'num_leaves':np.arange(10, 60, 5)
+                            },cv=3, scoring="balanced_accuracy",verbose=1,n_jobs=-1, 
+                             n_iter=20, random_state = 0
+                           )
+random_search.fit(X,y)
+print(random_search.best_score_, random_search.best_params_)
+print(random_search.best_estimator_)
+```
+Score; 0.862
+Model: LGBMClassifier(learning_rate=0.6, max_bin=75, n_estimators=192, num_class=4, num_leaves=40, objective='multiclass')
 
 ## Conclusion
 The need for contextual clues in determining malicious links. For example, a history of malicious services on the link domain show the potential for abuse. These historical data points could be obtained from google transparency report, or resources like URLVoid. Part of the complexity of this classification problem also stems from the dataset. Some links are categoriezed as 'defacement' as they once were, but have since been re-establised as benign websites.
