@@ -1,8 +1,9 @@
 # Phishing for a Model - An Applied Machine Learning Journey
 
 <!-- ![Gif](Images/p7/phishing.gif) -->
+<p align="center">
 <img src="Images/p7/phishing.gif" width="450">
-
+</p>
 My research goal is to find an effective method of classifying URLs into categories of benign, defacement, phishing, and malware. I will be expanding on current research by exploring the effectiveness of Random Forest, Adaboost, XGBoost, and LightGBM. Finally I will discuss the benefits of implementing an Adaptive Synthetic (ADASYN) algorithm on the imbalanced dataset.
 
 ## Setup & Data Pre-Processing
@@ -255,7 +256,7 @@ plt.show()
 This 3D plot now shows the three variables, colorcoded the same as before. It also starts to show the complexity of categorizing URLs. To me, there appears to be noticible (but hardly absolute) regions that distinguish classifications. 
 
 
-## Quick Rough Comparison of Algorithms
+## A Comparison of Algorithms
 
 ### Model: Decision Tree
 ```Python
@@ -589,15 +590,19 @@ Random Forest            |  Oversampled Random Forest
 <img src="Images/p7/rfheat1.png">  |  <img src="Images/p7/rfheat2.png">
 
 
-And here are the statistics repors in tabular form:
+And here are the statistics repors in tabular form.
+Left is the previous test results, right is after ADASYN. 
 
-| Measurement | AdaBoost | LightGBM | XGBoost | Random Forest
+<img src="Images/p7/results.png"> 
+
+
+<!-- | Measurement | AdaBoost | LightGBM | XGBoost | Random Forest
 | --- | --- | --- | --- | --- |
 | Accuracy | 56.70% | 88.87% | 93.55% | 96.84%|
 | Sensitivity | 0.982 | 0.974 | 0.998 | 0.999 |
 | Specificity | 0.930 | 0.973 | 0.987| 0.990 |
 | Micro F1 | 0.57 | 0.89 | 0.94 | 0.97 |
-| Macro F1 | 0.56 | 0.89 | 0.94 | 0.97 |
+| Macro F1 | 0.56 | 0.89 | 0.94 | 0.97 | -->
 
 ## Results Summary 
 Some definitions and understandings:
