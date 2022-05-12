@@ -4,8 +4,10 @@
 <p align="center">
 <img src="Images/p7/phishing.gif" width="450">
 </p>
+
 My research goal is to find an effective method of classifying URLs into categories of benign, defacement, phishing, and malware. I will be expanding on current research by exploring the effectiveness of Random Forest, Adaboost, XGBoost, and LightGBM. Finally I will discuss the benefits of implementing an Adaptive Synthetic (ADASYN) algorithm on the imbalanced dataset.
 
+----
 ## Setup & Data Pre-Processing
 The dataset is from Kaggle, and can be found at <https://www.kaggle.com/datasets/sid321axn/malicious-urls-dataset>
 
@@ -40,6 +42,7 @@ data['category'] = data['type']
 data = data.replace(categories)
 ```
 
+---
 ## Feature Extraction
 
 We now have a dataset that contains the URLs and their classifications, but we need to have features to train our models on. Instead of taking a natural language processing approach, I would like to approach this situation by extracting more data out of each sample in the form of quantities. 
@@ -201,6 +204,7 @@ X = data.drop(['url','type','category'],axis=1)
 y = data['category']
 ```
 
+---
 ## Data Exploration
 Before we begin feeding the data into the models, I'd like to take a second to better understand our features. While it won't be possible to be model past the 3rd dimension, just a slight bit of visualization always helps me.
 
@@ -541,6 +545,7 @@ I have summarized the results in tabular form:
 | Micro F1 | 0.61 | 0.86 | 0.98 | 0.97 |
 | Macro F1 | 0.48 | 0.68 | 0.90 | 0.90 |
 
+---
 ## Adaptive Synthetic Oversampling (ADASYN)
 
 Since the dataset is completely imbalanced with the majority of observations being benign, it is worth considering crafting a balanced dataset and seeing how the algorithms perform.
@@ -554,6 +559,7 @@ transformed_data = scale.fit_transform(X_resamp[:][['urlLen', 'capitalToLower', 
 transformed_data = preprocessing.normalize(transformed_data)
 ```
 
+---
 ## Re-Exploring Oversampled Data 
 
 This visualization shows the URL length and Capital to Lowercase letter ratios with our newly resampled data. The 3d version also contains a count of periods '.' in the url.
@@ -618,14 +624,28 @@ Some definitions and understandings:
 - We use *micro-averaging score* when there is a need to weight each instance or prediction equally
 
 - We use *macro-averaging* score when all classes need to be treated equally to evaluate the overall performance of the classifier with regard to the most frequent class labels.
-
+---
 ## Conclusion
+I believe this research provides two key takeaways. 
+
+1. Machine learning techniques can be applied successfuly to a high degree to problems of this nature. With the additional tuning provided the best models were able to achieve a high accuracy rate ~97%. 
+2. Data preperation is essential for building a viable model. In fact, I believe encorporating additional data (like time website is life, what cookies stored, domain registry history, etc.) could enable a model to spot threats with close to perfect precision.
+
 The need for contextual clues in determining malicious links. For example, a history of malicious services on the link domain show the potential for abuse. These historical data points could be obtained from google transparency report, or resources like URLVoid. Part of the complexity of this classification problem also stems from the dataset. Some links are categoriezed as 'defacement' as they once were, but have since been re-establised as benign websites.
 
 It is also important to consider whether we want to optimize for *precision* or *specificity*. When considering the applications of these models for daily use, it seems that false positives would be preferable to false negatives. In other words, is better that we flag links as concerning that are actually benign than to flag a malicious link as benign and risk compromising security. 
 
+Given these considerations, I found that a tuned XGBoost model is incredibly effective at categorizing links into the appropriate categories. 
+
+### 1st Place: XGBoost
+### 2nd Place: Random Forest
+
+---
+## Future Research
+
 Additional research could explore natural language processing techniques of analyzing the URL data, along with implementations of custom neural networks.
 
+---
 ## Sources
 
 <https://www.lifewire.com/how-to-test-a-suspicious-link-without-clicking-it-2487171>
