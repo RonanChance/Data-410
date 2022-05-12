@@ -7,7 +7,6 @@
 
 My research goal is to find an effective method of classifying URLs into categories of benign, defacement, phishing, and malware. I will be expanding on current research by exploring the effectiveness of Random Forest, Adaboost, XGBoost, and LightGBM. Finally I will discuss the benefits of implementing an Adaptive Synthetic (ADASYN) algorithm on the imbalanced dataset.
 
-----
 ## Setup & Data Pre-Processing
 The dataset is from Kaggle, and can be found at <https://www.kaggle.com/datasets/sid321axn/malicious-urls-dataset>
 
@@ -577,6 +576,8 @@ Given Data             |  Oversampled Data
 :-------------------------:|:-------------------------:
 <img src="Images/p7/breakdown.png">  |  <img src="Images/p7/breakdown2.png">
 
+These graphs are helpful to visualize how imbalanced the dataset it. As can be seen prior to oversampling the dataset is majoritively comprised of blue points. Afterwards the other color points (categories) because much more substantial and defined. It helps to see to the extent possible how a model will have to find categories in this n-dimensional space. 
+
 ## Rerunning Tests using Oversampled Data
 
 AdaBoost             |  Oversampled AdaBoost
@@ -595,9 +596,10 @@ Random Forest            |  Oversampled Random Forest
 :-------------------------:|:-------------------------:
 <img src="Images/p7/rfheat1.png">  |  <img src="Images/p7/rfheat2.png">
 
+These results show how the model is also consistent in predicting the less dominant categories and is not just overfit or always predicting the more common category. By oversampling we provide the models with more data to find more defined patterns in.
 
 And here are the statistics repors in tabular form.
-Left is the previous test results, right is after ADASYN. 
+Left is the previous test results, right is after ADASYN. While a decent number of statistics decreated, this is because the models had to find ways to manage the new data. 
 
 <img src="Images/p7/results.png"> 
 
@@ -624,6 +626,9 @@ Some definitions and understandings:
 - We use *micro-averaging score* when there is a need to weight each instance or prediction equally
 
 - We use *macro-averaging* score when all classes need to be treated equally to evaluate the overall performance of the classifier with regard to the most frequent class labels.
+
+In this type of problem it is much more important to classify possible threats as significant than it is to have some false positives. For this reason, the models with high sensitivity are preferable for deployment in the wild. XGBoost and Random Forest both performed extremely well in this regard (~0.998 vs ~0.999 respectively).
+
 ---
 ## Conclusion
 I believe this research provides two key takeaways. 
@@ -644,6 +649,8 @@ Given these considerations, I found that a tuned XGBoost model is incredibly eff
 ## Future Research
 
 Additional research could explore natural language processing techniques of analyzing the URL data, along with implementations of custom neural networks.
+
+I also think that the collection of more data with each URL like the domain history, registration information, cookies used, uptime, and others could be used to further refine these models. 
 
 ---
 ## Sources
